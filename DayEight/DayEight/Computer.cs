@@ -41,13 +41,7 @@ namespace DayEight
                 ExecuteInstruction(isTrue, instruction, registerToModify, value);
             }
 
-            var nums = new List<int>();
-            foreach (var num in _registers.Values)
-            {
-                nums.Add(num);
-            }
-
-            return nums.Max();
+            return _registers.Values.ToList().Max();
         }
 
         public int SolvePartTwo()
