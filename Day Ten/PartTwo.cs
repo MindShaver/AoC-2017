@@ -71,11 +71,11 @@ namespace DayTen
                     ^ sparseHash[i + 12] ^ sparseHash[i + 13] ^ sparseHash[i + 14] ^ sparseHash[i + 15]));
             }
 
-            var hex = new StringBuilder(denseHash.Count * 2);
-            foreach (var b in denseHash)
-                hex.AppendFormat("{0:x2}", b);
+            var knotHash = new StringBuilder(denseHash.Count * 2);
+            foreach (var value in denseHash)
+                knotHash.AppendFormat("{0:x2}", value);
 
-            return hex.ToString();
+            return knotHash.ToString();
         }
     }
 }
