@@ -8,7 +8,6 @@ namespace DayThirteen
     {
         public int SolvePartOne()
         {
-
             var depths = new Dictionary<int, Layer>();
             var scanner = new int[96];
             var totalSeverity = 0;
