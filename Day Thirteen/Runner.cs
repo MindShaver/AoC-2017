@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace DayThirteen
 {
-    public class Runner
+    public abstract class Runner
     {
-        public Dictionary<int, Layer> Depths = new Dictionary<int, Layer>();
-
         public int SolvePartOne()
         {
+
+            var depths = new Dictionary<int, Layer>();
             var scanner = new int[96];
             var totalSeverity = 0;
 
@@ -18,20 +18,20 @@ namespace DayThirteen
                 var parsedLine = line.Split(':', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
                 var depth = parsedLine[0];
                 var range = parsedLine[1];
-                Depths.Add(parsedLine[0], new Layer(depth, range));
+                depths.Add(parsedLine[0], new Layer(depth, range));
             }
 
             for (var i = 0; i < scanner.Length; i++)
             {
-                if (Depths.ContainsKey(i))
+                if (depths.ContainsKey(i))
                 {
-                    if (Depths[i].Caught)
+                    if (depths[i].Caught)
                     {
-                        totalSeverity += Depths[i].Severity;
+                        totalSeverity += depths[i].Severity;
                     }
                 }
 
-                foreach (var layer in Depths.Values)
+                foreach (var layer in depths.Values)
                 {
                     layer.Move();
                 }
@@ -55,13 +55,16 @@ namespace DayThirteen
 
             while (true)
             {
-                var found = false;
-                if (shallowDepths.Any(layer => (delay + layer.Depth) % (layer.Range * 2 - 2) == 0))
+                var caught = false;
+
+                if (shallowDepths.Any(layer => (delay + layer.Depth) % layer.CalculateRange() == 0))
                 {
                     delay++;
-                    found = true;
+                    caught = true;
                 }
-                if (!found) break;
+
+                if (!caught)
+                    break;
             }
 
             return delay;
@@ -104,6 +107,12 @@ namespace DayThirteen
             }
 
             Caught = Position == 0;
+        }
+
+        public int CalculateRange()
+        {
+            // Need range both ways, minus 2 for not counting the ends twice
+            return Range * 2 - 2;
         }
     }
 }
